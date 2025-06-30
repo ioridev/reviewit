@@ -7,8 +7,10 @@ import { Checkbox } from './components/Checkbox';
 import { DiffViewer } from './components/DiffViewer';
 import { FileList } from './components/FileList';
 import { useLocalComments } from './hooks/useLocalComments';
+import { adaptedFetch, vscode } from './vscode-adapter';
 
 function App() {
+  console.log('[App] Component rendering...');
   const [diffData, setDiffData] = useState<DiffResponse | null>(null);
   const [reviewedFiles, setReviewedFiles] = useState<Set<string>>(new Set());
   const [diffMode, setDiffMode] = useState<'side-by-side' | 'inline'>('side-by-side');
@@ -50,23 +52,36 @@ function App() {
     void fetchDiffData();
   }, [ignoreWhitespace]);
 
-  // Establish SSE connection for tab close detection
+  // Establish SSE connection for tab close detection (not needed in VSCode)
   useEffect(() => {
-    const eventSource = new EventSource('/api/heartbeat');
+    if (import.meta.env.VSCODE === 'true') {
+      // In VSCode, request initial data
+      if (vscode) {
+        vscode.postMessage({ command: 'getComments' });
+      }
+      return;
+    }
 
-    eventSource.onopen = () => {
-      console.log('Connected to server heartbeat');
-    };
+    try {
+      const eventSource = new EventSource('/api/heartbeat');
 
-    eventSource.onerror = () => {
-      console.log('Server connection lost');
-      eventSource.close();
-    };
+      eventSource.onopen = () => {
+        console.log('Connected to server heartbeat');
+      };
 
-    // Cleanup on unmount
-    return () => {
-      eventSource.close();
-    };
+      eventSource.onerror = () => {
+        console.log('Server connection lost');
+        eventSource.close();
+      };
+
+      // Cleanup on unmount
+      return () => {
+        eventSource.close();
+      };
+    } catch (error) {
+      console.log('Failed to establish SSE connection:', error);
+      return undefined;
+    }
   }, []);
 
   // Check if file is a lock file that should be collapsed by default
@@ -88,10 +103,13 @@ function App() {
   };
 
   const fetchDiffData = async () => {
+    console.log('[App] fetchDiffData called, ignoreWhitespace:', ignoreWhitespace);
     try {
-      const response = await fetch(`/api/diff?ignoreWhitespace=${ignoreWhitespace}`);
+      const response = await adaptedFetch(`/api/diff?ignoreWhitespace=${ignoreWhitespace}`);
+      console.log('[App] Response received:', response);
       if (!response.ok) throw new Error('Failed to fetch diff data');
       const data = await response.json();
+      console.log('[App] Diff data parsed:', data);
       setDiffData(data);
 
       // Auto-collapse lock files

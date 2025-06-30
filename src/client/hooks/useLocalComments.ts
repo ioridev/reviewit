@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 
 import { type Comment } from '../../types/diff';
+import { storage } from '../vscode-adapter';
 
 export function useLocalComments(commitHash?: string) {
   const [comments, setComments] = useState<Comment[]>([]);
   const storageKey = commitHash ? `reviewit-comments-${commitHash}` : 'reviewit-comments';
 
-  // Load comments from localStorage on mount
+  // Load comments from storage on mount
   useEffect(() => {
-    const savedComments = localStorage.getItem(storageKey);
+    const savedComments = storage.getItem(storageKey);
     if (savedComments) {
       try {
         setComments(JSON.parse(savedComments));
@@ -18,9 +19,9 @@ export function useLocalComments(commitHash?: string) {
     }
   }, [storageKey]);
 
-  // Save comments to localStorage whenever comments change
+  // Save comments to storage whenever comments change
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(comments));
+    storage.setItem(storageKey, JSON.stringify(comments));
   }, [comments, storageKey]);
 
   const addComment = (file: string, line: number, body: string, codeContent?: string): Comment => {
@@ -48,7 +49,7 @@ export function useLocalComments(commitHash?: string) {
 
   const clearAllComments = () => {
     setComments([]);
-    localStorage.removeItem(storageKey);
+    storage.removeItem(storageKey);
   };
 
   const generatePrompt = (comment: Comment): string => {

@@ -1,0 +1,67 @@
+{
+  "name": "reviewit-vscode",
+  "displayName": "ReviewIt",
+  "description": "GitHub-like diff viewer for Git commits in VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "reviewit.showDiff",
+        "title": "ReviewIt: Show Diff",
+        "category": "ReviewIt"
+      },
+      {
+        "command": "reviewit.showCommit",
+        "title": "ReviewIt: Show Commit Diff",
+        "category": "ReviewIt"
+      },
+      {
+        "command": "reviewit.showWorking",
+        "title": "ReviewIt: Show Working Directory Changes",
+        "category": "ReviewIt"
+      },
+      {
+        "command": "reviewit.showStaged",
+        "title": "ReviewIt: Show Staged Changes",
+        "category": "ReviewIt"
+      }
+    ],
+    "views": {
+      "scm": [
+        {
+          "id": "reviewit.filesView",
+          "name": "ReviewIt Files",
+          "icon": "$(git-compare)",
+          "contextualTitle": "ReviewIt"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run compile && npm run build:webview",
+    "build:webview": "cd .. && vite build --mode vscode",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "dev:webview": "cd .. && vite build --mode vscode --watch"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "simple-git": "^3.20.0"
+  }
+}

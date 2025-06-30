@@ -1,0 +1,238 @@
+:root {
+  --vscode-font-family: var(--font-family);
+  --vscode-font-size: var(--font-size);
+  --vscode-editor-background: var(--background);
+  --vscode-editor-foreground: var(--foreground);
+}
+
+body {
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-editor-foreground);
+  background-color: var(--vscode-editor-background);
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.2em;
+  color: var(--vscode-descriptionForeground);
+}
+
+.diff-viewer {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.file-list {
+  width: 300px;
+  min-width: 200px;
+  max-width: 50%;
+  background-color: var(--vscode-sideBar-background);
+  border-right: 1px solid var(--vscode-panel-border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.file-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.file-item:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.file-item.selected {
+  background-color: var(--vscode-list-activeSelectionBackground);
+  color: var(--vscode-list-activeSelectionForeground);
+}
+
+.file-status {
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.file-status.added {
+  color: var(--vscode-gitDecoration-addedResourceForeground);
+  background-color: var(--vscode-diffEditor-insertedTextBackground);
+}
+
+.file-status.deleted {
+  color: var(--vscode-gitDecoration-deletedResourceForeground);
+  background-color: var(--vscode-diffEditor-removedTextBackground);
+}
+
+.file-status.modified {
+  color: var(--vscode-gitDecoration-modifiedResourceForeground);
+}
+
+.file-status.renamed {
+  color: var(--vscode-gitDecoration-renamedResourceForeground);
+}
+
+.file-stats {
+  margin-left: auto;
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+}
+
+.diff-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.diff-header {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.diff-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.2em;
+}
+
+.diff-header .commit-info {
+  color: var(--vscode-descriptionForeground);
+  font-size: 0.9em;
+}
+
+.diff-chunk {
+  margin-bottom: 24px;
+}
+
+.chunk-header {
+  background-color: var(--vscode-diffEditor-border);
+  color: var(--vscode-descriptionForeground);
+  padding: 4px 8px;
+  font-family: var(--vscode-editor-font-family);
+  font-size: 0.9em;
+}
+
+.diff-line {
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size);
+  line-height: 1.5;
+  display: flex;
+  white-space: pre;
+}
+
+.line-number {
+  width: 50px;
+  text-align: right;
+  padding-right: 8px;
+  color: var(--vscode-editorLineNumber-foreground);
+  user-select: none;
+}
+
+.line-content {
+  flex: 1;
+  padding-left: 8px;
+}
+
+.diff-line.add {
+  background-color: var(--vscode-diffEditor-insertedTextBackground);
+  color: var(--vscode-diffEditor-insertedTextForeground);
+}
+
+.diff-line.delete {
+  background-color: var(--vscode-diffEditor-removedTextBackground);
+  color: var(--vscode-diffEditor-removedTextForeground);
+}
+
+.comment-button {
+  position: absolute;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  border-radius: 3px;
+}
+
+.diff-line:hover .comment-button {
+  opacity: 1;
+}
+
+.comment-box {
+  background-color: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 4px;
+  padding: 12px;
+  margin: 8px 0;
+  margin-left: 58px;
+}
+
+.comment-header {
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+  margin-bottom: 8px;
+}
+
+.comment-body {
+  margin-bottom: 8px;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-actions button {
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 0.85em;
+  border-radius: 3px;
+}
+
+.comment-actions button:hover {
+  background: var(--vscode-button-hoverBackground);
+}
+
+.comment-input {
+  width: 100%;
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+  padding: 8px;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  border-radius: 3px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.no-file-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--vscode-descriptionForeground);
+  font-size: 1.1em;
+}
