@@ -1,3 +1,5 @@
+> **Note**: This is a fork of the original [ReviewIt](https://github.com/yoshiko-pg/reviewit) with added VSCode extension support. See the [VSCode extension README](vscode-extension/README.md) for details.
+
 <div align="center">
   <img src="public/logo.png" alt="ReviewIt" width="400">
 </div>
